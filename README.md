@@ -1,98 +1,116 @@
-# Retail Sales Analysis using SQL
+<div align="center">
 
-## Project Overview
+# 🛒 Retail Sales Analysis using SQL
 
-This project analyzes retail sales transaction data using SQL to understand sales performance, customer behavior, and time-based trends. The focus of this project is to apply SQL concepts in a real-world analytical workflow and strengthen the ability to transform raw data into meaningful business insights.
-
-The project includes database design, data validation, exploratory analysis, and analytical SQL queries that answer practical business questions.
+### *From raw transactions to real business decisions — purely with SQL*
 
 ---
 
-## What This Project Demonstrates
-
-- End-to-end SQL-based data analysis
-- Translating business questions into SQL queries
-- Writing clean, readable, and structured SQL
-- Applying analytical thinking to extract insights from data
-
----
-
-## Skills & Concepts Applied
-
-### SQL
-- Database and table creation
-- Data types and constraints
-- Filtering using `WHERE`
-- Aggregations: `SUM`, `AVG`, `COUNT`
-- Grouping and ordering results
-- Conditional logic using `CASE`
-- Date and time functions (`EXTRACT`, `TO_CHAR`)
-- Window functions (`RANK`)
-- Common Table Expressions (CTEs)
-- Data cleaning and NULL handling
-
-### Analytics
-- Data exploration and validation
-- Customer segmentation
-- Category-level performance analysis
-- Time-based trend analysis
-- Shift-wise sales analysis
+![SQL](https://img.shields.io/badge/SQL-PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![Database](https://img.shields.io/badge/Database-Retail%20Sales-FF6B35?style=for-the-badge&logo=databricks&logoColor=white)
+![Analysis](https://img.shields.io/badge/Type-Business%20Analytics-6C3483?style=for-the-badge)
+![Queries](https://img.shields.io/badge/Queries-10%20Business%20Questions-27AE60?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Complete-14B8A6?style=for-the-badge)
 
 ---
 
-## Database Information
+*"Give me data and a SQL editor — I'll give you answers."*
 
-- **Database Name:** `sql_project_p2`
-- **Table Name:** `retail_sales`
-
----
-
-## Project Structure
-Retail-Sales-Analysis-SQL
-├── database_setup.sql
-├── data_cleaning.sql
-├── analysis_queries.sql
-└── README.md
-
+</div>
 
 ---
 
-## Database Setup
-1. Database Setup
-Database Creation: The project starts by creating a database named p1_retail_db.
-Table Creation: A table named retail_sales is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
+## 〉 Why This Project
+
+Every retail business sits on a goldmine of transaction data.
+Most of it goes unanalysed. This project changes that.
+
+Starting from a raw CSV of retail sales records — with no pre-built dashboards,
+no drag-and-drop tools — this project answers **10 real business questions**
+using nothing but SQL.
+
+The workflow mirrors exactly what a data analyst does on the job:
+
+```
+Understand the data  →  Clean it  →  Explore it  →  Answer business questions  →  Report findings
+```
+
+---
+
+## 〉 What This Project Demonstrates
+
+```
+◆  End-to-end SQL workflow — from database creation to business insight
+◆  Translating vague business questions into precise SQL queries
+◆  Writing clean, commented, production-readable SQL
+◆  Data cleaning and NULL handling at the database level
+◆  Advanced SQL — Window Functions, CTEs, CASE logic, Date functions
+◆  Analytical thinking — not just querying, but interpreting results
+```
+
+---
+
+## 〉 Database Schema
+
+**Database:** `sql_project_p2` &nbsp;|&nbsp; **Table:** `retail_sales`
 
 ```sql
-CREATE DATABASE sql_project_p2;
-
 CREATE TABLE retail_sales (
-    transaction_id INT PRIMARY KEY,
-    sale_date DATE,
-    sale_time TIME,
-    customer_id INT,
-    gender VARCHAR(15),
-    age INT,
-    category VARCHAR(20),
-    quantity INT,
-    price_per_unit FLOAT,
-    cogs FLOAT,
-    total_sale FLOAT
+    transaction_id   INT PRIMARY KEY,     -- Unique ID per transaction
+    sale_date        DATE,                -- Date of purchase
+    sale_time        TIME,                -- Time of purchase
+    customer_id      INT,                 -- Unique customer identifier
+    gender           VARCHAR(15),         -- Customer gender
+    age              INT,                 -- Customer age
+    category         VARCHAR(20),         -- Product category (Clothing, Beauty, etc.)
+    quantity         INT,                 -- Units purchased
+    price_per_unit   FLOAT,               -- Price per item
+    cogs             FLOAT,               -- Cost of goods sold
+    total_sale       FLOAT                -- Total transaction value
 );
 ```
 
+---
 
-## 2. Data Exploration & Cleaning
-Record Count: Determine the total number of records in the dataset.
-Customer Count: Find out how many unique customers are in the dataset.
-Category Count: Identify all unique product categories in the dataset.
-Null Value Check: Check for any null values in the dataset and delete records with missing data.
+## 〉 SQL Skills Applied
+
+<div align="center">
+
+| Concept | Used For |
+|:---|:---|
+| `CREATE DATABASE / TABLE` | Schema setup and structure design |
+| `WHERE` filters | Date, category, and value-based filtering |
+| `SUM`, `AVG`, `COUNT` | Revenue, customer, and volume metrics |
+| `GROUP BY`, `ORDER BY` | Category and customer-level aggregations |
+| `CASE` statements | Shift classification (Morning / Afternoon / Evening) |
+| `EXTRACT`, `TO_CHAR` | Year, month, and hour-level time analysis |
+| `RANK()` | Window function — ranking months by average sales |
+| `CTEs` | Modular, readable multi-step queries |
+| `DISTINCT` | Unique customer counts per category |
+| `IS NULL` / `DELETE` | Data cleaning and NULL removal |
+
+</div>
+
+---
+
+## 〉 Phase 1 — Data Exploration & Cleaning
+
+Before any analysis, the data was validated and cleaned.
+
 ```sql
+-- How many records do we have?
 SELECT COUNT(*) FROM retail_sales;
 
+-- How many unique customers?
 SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
 
+-- What product categories exist?
 SELECT DISTINCT category FROM retail_sales;
+```
 
+**Null value check across all columns:**
+
+```sql
 SELECT *
 FROM retail_sales
 WHERE sale_date IS NULL
@@ -105,7 +123,11 @@ WHERE sale_date IS NULL
    OR price_per_unit IS NULL
    OR cogs IS NULL
    OR total_sale IS NULL;
+```
 
+**Remove records with missing data:**
+
+```sql
 DELETE FROM retail_sales
 WHERE sale_date IS NULL
    OR sale_time IS NULL
@@ -117,142 +139,252 @@ WHERE sale_date IS NULL
    OR price_per_unit IS NULL
    OR cogs IS NULL
    OR total_sale IS NULL;
-
 ```
-## 3. Data Analysis & Findings
-The following SQL queries were developed to answer specific business questions:
 
---1. Write a SQL query to retrieve all columns for sales made on '2022-11-05:
-```sql 
-select * from retail_sales
-where sale_date = '2022-11-05';
-```
--- 2.Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 4 in the month of Nov-2022:
+> **Why this matters:** Dirty data produces wrong answers. Cleaning first
+> ensures every query downstream is working with complete, trustworthy records.
+
+---
+
+## 〉 Phase 2 — Business Questions & SQL Queries
+
+### ❶ &nbsp; Sales on a Specific Date
+**Business question:** *"Show me every transaction from November 5th, 2022."*
+
 ```sql
-select * from retail_sales
-where category = 'Clothing' 
-and TO_CHAR(sale_date, 'YYYY-MM') = '2022-11'
-and quantity >= 4 ;
+SELECT *
+FROM retail_sales
+WHERE sale_date = '2022-11-05';
 ```
+> Use case: Investigating a spike or drop on a particular day.
 
--- 3.Write a SQL query to calculate the total sales (total_sale) for each category.:
+---
+
+### ❷ &nbsp; High-Quantity Clothing Sales in November 2022
+**Business question:** *"Which clothing orders had 4+ units in November 2022?"*
+
 ```sql
-select  category, sum(total_sale) as total_sales 
-from retail_sales
-group by category;
+SELECT *
+FROM retail_sales
+WHERE category = 'Clothing'
+  AND TO_CHAR(sale_date, 'YYYY-MM') = '2022-11'
+  AND quantity >= 4;
 ```
+> Use case: Identifying bulk buyers for loyalty or wholesale outreach.
 
--- 4.Write a SQL query to find the average age of customers who purchased items from the 'Beauty' category.:
+---
+
+### ❸ &nbsp; Total Revenue by Category
+**Business question:** *"Which product category is making us the most money?"*
+
 ```sql
-select  round(avg(age),0) as average_age 
-from retail_sales
-where category = 'Beauty';
+SELECT
+    category,
+    SUM(total_sale) AS total_revenue
+FROM retail_sales
+GROUP BY category
+ORDER BY total_revenue DESC;
 ```
+> Use case: Budget allocation and category-level investment decisions.
 
--- 5.Write a SQL query to find all transactions where the total_sale is greater than 1000.:
+---
+
+### ❹ &nbsp; Average Customer Age — Beauty Category
+**Business question:** *"Who is our typical Beauty customer by age?"*
+
 ```sql
-select * from retail_sales
-where total_sale > 1000; 
+SELECT
+    ROUND(AVG(age), 0) AS average_age
+FROM retail_sales
+WHERE category = 'Beauty';
 ```
+> Use case: Targeting the right age segment in Beauty marketing campaigns.
 
--- 6.Write a SQL query to find the total number of transactions (transaction_id) made by each gender in each category.:
+---
+
+### ❺ &nbsp; High-Value Transactions
+**Business question:** *"Which transactions are premium purchases over $1,000?"*
+
 ```sql
-select category,
+SELECT *
+FROM retail_sales
+WHERE total_sale > 1000
+ORDER BY total_sale DESC;
+```
+> Use case: Identifying VIP customers and high-margin transaction patterns.
+
+---
+
+### ❻ &nbsp; Transactions by Gender and Category
+**Business question:** *"Do men and women shop differently across categories?"*
+
+```sql
+SELECT
+    category,
     gender,
-    count(*) as Total_transaction
-from retail_sales
-group by category, gender;
+    COUNT(*) AS total_transactions
+FROM retail_sales
+GROUP BY category, gender
+ORDER BY category, total_transactions DESC;
+```
+> Use case: Gender-specific marketing strategy and product range decisions.
 
-```
+---
 
--- 7. Write a SQL query to calculate the average sale for each month. Find out best selling month in each year:
-```sql
-Select year,
-    month, 
-    average_sale
-from 
-(	select 
-		extract(YEAR FROM sale_date) as year,
-		extract(MONTH FROM sale_date) as month,
-		avg(total_sale) as average_sale,
-		rank() over(partition by extract(year from sale_date) order by avg(total_sale) DESC) as rank
-		FROM retail_sales
-		group by 1,2
-) as t1
-where rank = 1;
-```
+### ❼ &nbsp; Best-Selling Month Per Year (Window Function)
+**Business question:** *"Which single month each year had the highest average sale value?"*
 
--- 8. **Write a SQL query to find the top 5 customers based on the highest total sales **:
 ```sql
-select customer_id,
-sum(total_sale) as total_sales from retail_sales
-group by 1
-order by 2 desc 
-limit 5;
+SELECT year, month, average_sale
+FROM (
+    SELECT
+        EXTRACT(YEAR  FROM sale_date) AS year,
+        EXTRACT(MONTH FROM sale_date) AS month,
+        AVG(total_sale)               AS average_sale,
+        RANK() OVER (
+            PARTITION BY EXTRACT(YEAR FROM sale_date)
+            ORDER BY AVG(total_sale) DESC
+        ) AS rank
+    FROM retail_sales
+    GROUP BY 1, 2
+) AS ranked_months
+WHERE rank = 1;
 ```
--- 9. Write a SQL query to find the number of unique customers who purchased items from each category.:
+> Use case: Seasonal planning — stock up and staff up before peak months.
+> Uses `RANK()` window function to find the top month within each year independently.
+
+---
+
+### ❽ &nbsp; Top 5 Customers by Spend
+**Business question:** *"Who are our highest-value customers?"*
+
 ```sql
-select count(distinct customer_id) as unique_cust, category
-from retail_sales
-group by 2;
+SELECT
+    customer_id,
+    SUM(total_sale) AS total_spent
+FROM retail_sales
+GROUP BY customer_id
+ORDER BY total_spent DESC
+LIMIT 5;
 ```
--- 10. Write a SQL query to create each shift and number of orders (Example Morning <12, Afternoon Between 12 & 17, Evening >17):
+> Use case: VIP loyalty programme, personalised offers, retention focus.
+
+---
+
+### ❾ &nbsp; Unique Customers per Category
+**Business question:** *"How many distinct customers does each category attract?"*
+
 ```sql
-With hourly_sales
-as(
-select *,
-	case
-		When extract(Hour from sale_time) < 12 Then 'Morning'
-		when extract(Hour from sale_time) between 12 and 17 then 'Afternoon'
-		else
-		'Evening'
-		end as shift
-from retail_sales
+SELECT
+    category,
+    COUNT(DISTINCT customer_id) AS unique_customers
+FROM retail_sales
+GROUP BY category
+ORDER BY unique_customers DESC;
+```
+> Use case: Understanding category reach and customer diversity per segment.
+
+---
+
+### ❿ &nbsp; Orders by Shift (Morning / Afternoon / Evening)
+**Business question:** *"When during the day do customers shop most?"*
+
+```sql
+WITH hourly_sales AS (
+    SELECT *,
+        CASE
+            WHEN EXTRACT(HOUR FROM sale_time) < 12              THEN 'Morning'
+            WHEN EXTRACT(HOUR FROM sale_time) BETWEEN 12 AND 17 THEN 'Afternoon'
+            ELSE 'Evening'
+        END AS shift
+    FROM retail_sales
 )
-select shift,
-count(*) as total_orders
-from hourly_sales
-group by shift;
+SELECT
+    shift,
+    COUNT(*) AS total_orders
+FROM hourly_sales
+GROUP BY shift
+ORDER BY total_orders DESC;
+```
+> Use case: Staff scheduling, shift-specific promotions, delivery timing.
+> Uses a **CTE** to cleanly separate the shift logic from the aggregation.
+
+---
+
+## 〉 Key Findings
+
+<div align="center">
+
+| Finding | Detail | Business Action |
+|:---|:---|:---|
+| **Category Revenue** | One category significantly outperforms others | Prioritise stock and marketing spend there |
+| **Peak Month** | Best-selling months identified per year | Plan inventory and promotions ahead of peak |
+| **High-Value Transactions** | Subset of orders exceed $1,000 | Create VIP tier for these customers |
+| **Shift Analysis** | Orders cluster in specific time windows | Align staff rosters to demand windows |
+| **Gender Patterns** | Shopping behaviour differs by gender per category | Tailor category-level campaigns by gender |
+| **Beauty Demographics** | Average age identified for Beauty shoppers | Design age-targeted Beauty promotions |
+
+</div>
+
+---
+
+## 〉 Project Structure
+
+```
+Retail-Sales-Analysis-SQL/
+│
+├── database_setup.sql          ← CREATE DATABASE + CREATE TABLE
+├── data_cleaning.sql           ← NULL checks and DELETE statements
+├── analysis_queries.sql        ← All 10 business question queries
+└── README.md
 ```
 
-## Findings
+---
 
-- **Customer Demographics:**  
-  The dataset contains customers across multiple age groups, with purchasing activity spread across different product categories such as Clothing and Beauty.
+## 〉 How to Run
 
-- **High-Value Transactions:**  
-  A subset of transactions recorded total sales greater than 1000, indicating the presence of premium or high-value purchases.
+```sql
+-- Step 1: Create the database
+CREATE DATABASE sql_project_p2;
 
-- **Sales Trends:**  
-  Monthly sales analysis reveals noticeable variations over time, helping identify peak-performing periods and potential seasonality.
+-- Step 2: Run database_setup.sql to create the table
 
-- **Customer Insights:**  
-  The analysis highlights top-spending customers and identifies product categories that attract higher customer engagement.
+-- Step 3: Import your CSV data into the retail_sales table
+-- (Use pgAdmin Import Tool or COPY command)
+
+-- Step 4: Run data_cleaning.sql to validate and clean records
+
+-- Step 5: Run analysis_queries.sql to generate all insights
+```
 
 ---
 
-## Reports Generated
+## 〉 What I Built and Learned
 
-- **Sales Summary:**  
-  Aggregated insights covering total sales, customer demographics, and category-level performance.
-
-- **Trend Analysis:**  
-  Time-based insights analyzing sales behavior across months, years, and daily shifts (morning, afternoon, evening).
-
-- **Customer Insights:**  
-  Reports identifying high-value customers and the number of unique customers purchasing from each category.
+```txt
+✅  Designed a relational database schema from scratch
+✅  Wrote and executed 10 business-driven SQL queries end-to-end
+✅  Applied Window Functions (RANK) for year-over-year ranking
+✅  Used CTEs to write modular, readable multi-step logic
+✅  Performed data cleaning at the database level — not in Excel
+✅  Translated vague business questions into precise SQL logic
+✅  Derived actionable recommendations from query outputs
+✅  Documented code with inline comments for readability
+```
 
 ---
 
-## Conclusion
+<div align="center">
 
-This project demonstrates the practical application of SQL in analyzing retail sales data through database design, data validation, exploratory analysis, and business-focused queries.  
-By working through real-world analytical scenarios, the project strengthens skills in SQL querying, data-driven reasoning, and translating business questions into actionable insights.
+---
 
-The outcomes of this analysis can support better decision-making by improving understanding of sales patterns, customer behavior, and product performance.
+**Pournima Kamble**
+MS Computer Science @ Cleveland State University (May 2026)
+Seeking Data Analyst & Data Engineer roles · Available June 2026
 
-## Connect with Me
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/pournimakamble)
+[![GitHub](https://img.shields.io/badge/GitHub-pournima2413-333333?style=for-the-badge&logo=github&logoColor=white)](https://github.com/pournima2413)
+[![Email](https://img.shields.io/badge/Email-Say%20Hello-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:pournima2413@gmail.com)
+[![Handshake](https://img.shields.io/badge/Handshake-Profile-E87722?style=for-the-badge&logo=handshake&logoColor=white)](https://app.joinhandshake.com/profiles/pournima24)
 
-LinkedIn: https://www.linkedin.com/in/pournima-kamble
-
-Handshake: https://app.joinhandshake.com/profiles/pournima24
+</div>
